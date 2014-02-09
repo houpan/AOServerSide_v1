@@ -26,11 +26,11 @@
 			<br/><br/><br/><br/><br/>
 			<li>Roll: <span id="rollLi"></span>g</li>
 			<li>Pitch: <span id="pitchLi"></span>g</li>
-<!--
+
 			<li>rotation alpha: <span id="rotationAlpha"></span>degree</li>
 			<li>rotation beta: <span id="rotationBeta"></span>degree</li>
 			<li>rotation gamma: <span id="rotationGamma"></span>degree</li>
--->
+
 		</ul>
 		
 		test: <span id="test"></span>
@@ -91,6 +91,7 @@
 					ax = e.accelerationIncludingGravity.x/10 * alpha + (ax * (1.0 - alpha));
 					ay = e.accelerationIncludingGravity.y/10 * alpha + (ay * (1.0 - alpha));
 					az = e.accelerationIncludingGravity.z/10 * alpha + (az * (1.0 - alpha));
+					ax = -ax;
 					ay = -ay;
 
 					

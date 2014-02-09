@@ -83,6 +83,41 @@ app.post('/COMMAND',function(req, res){
     
 });
     
+app.post('/COMMAND_FROM_ANDROID',function(req, res){
+	
+	
+	
+    var responseData = req.body;
+    console.log(responseData);
+    console.log(responseData.command);
+    //用了body parser之後，連arg1裡面的東西都會parse成array，還蠻方變得
+    console.log(responseData.roll);
+    console.log(responseData.pitch);
+    console.log(responseData.yaw);
+    console.log(responseData.overallCount);
+
+	var messageToUnity = {};
+	messageToUnity.command = responseData.command;
+	messageToUnity.roll = responseData.roll;
+	messageToUnity.pitch = responseData.pitch;
+	messageToUnity.yaw = responseData.yaw;
+	messageToUnity.overallCount = responseData.overallCount;
+	
+	var messageToUnity_json = JSON.stringify(messageToUnity);
+
+    hSocketOutside.write(messageToUnity_json);
+    
+    switch (responseData.command){
+	    case "ACCELEROMETER_DATA":
+	    	//注意！！這邊一定要回傳result，不然他積六個左右的post就會爛掉了！
+		    res.send("OK!");
+		    break;
+	    default:
+	    	break;
+    }
+    
+});
+
 
 app.get('/', function (req, res) {
   res.sendfile(__dirname + '/accGatherer.html');
