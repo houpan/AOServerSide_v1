@@ -1,0 +1,141 @@
+<html>
+	<head>	
+	    <script src="./include/jquery-1.10.2.min.js"></script>
+		<style>
+		body {
+			font-family: helvetica, arial, sans serif;
+		}
+		#sphere {
+			position: absolute;	
+			width: 50px;
+			height: 50px;
+			border-radius: 50px;
+			-webkit-radius: 50px;
+			background-color: blue;
+		}
+		</style>
+	</head>
+	<body>
+		<div id="content">
+		    <h1>Accelerometer Javascript Test</h1>
+		    <div id="sphere"></div>
+		<ul>
+			<li>acceleration x: <span id="accelerationX"></span>g</li>
+			<li>acceleration y: <span id="accelerationY"></span>g</li>
+			<li>acceleration z: <span id="accelerationZ"></span>g</li>
+			<br/><br/><br/><br/><br/>
+			<li>Roll: <span id="rollLi"></span>g</li>
+			<li>Pitch: <span id="pitchLi"></span>g</li>
+<!--
+			<li>rotation alpha: <span id="rotationAlpha"></span>degree</li>
+			<li>rotation beta: <span id="rotationBeta"></span>degree</li>
+			<li>rotation gamma: <span id="rotationGamma"></span>degree</li>
+-->
+		</ul>
+		
+		test: <span id="test"></span>
+		</div>
+		幹
+		
+		<script type="text/javascript">
+			var sentCount = 0;
+		   //javascript當參數傳進callback的時候，不用加變數那些得，只要名字就好
+			function jQuerySend(command, arg1){    
+				sentCount += 1;
+/* 				if(sentCount == 10){ */
+					sentCount = 0;
+					var message = {};
+					message.command = command;
+					message.arg1 = arg1;
+					console.log("送出！");
+					
+					var msg=JSON.stringify(message);
+					//！！JQuery版的POST以及callback  
+			
+					$.ajax({
+					  url: "/COMMAND",
+					  type: "POST",
+					  dataType: "xml/html/script/json", // expected format for response
+					  contentType: "application/json", // send as JSON
+					  data: msg,
+					}).always(function(result) {
+/* 						alert("back"); */
+					});
+/* 				} */
+
+		
+		
+			   // e.preventDefault();
+			}
+/*
+			for (var i = 1; i<100; i++){
+				jQuerySend("ACCELEROMETER_DATA",i);
+			}
+*/
+			
+			
+		</script>
+		
+		<script type="text/javascript">
+
+			var x = 0, y = 0,
+			    vx = 0, vy = 0,
+				ax = 0, ay = 0, az = 0;
+			var roll = 0;
+			var pitch = 0;
+			var sphere = document.getElementById("sphere");
+			var alpha = 0.5;
+			
+			if (window.DeviceMotionEvent != undefined) {
+				window.ondevicemotion = function(e) {
+
+/*
+					ax = Math.round(e.accelerationIncludingGravity.x*10)/10;
+					ay = Math.round(e.accelerationIncludingGravity.y*10)/10;
+					az = Math.round(e.accelerationIncludingGravity.z*10)/10;
+*/
+
+					ax = e.accelerationIncludingGravity.x/10 * alpha + (ax * (1.0 - alpha));
+					ay = e.accelerationIncludingGravity.y/10 * alpha + (ay * (1.0 - alpha));
+					az = e.accelerationIncludingGravity.z/10 * alpha + (az * (1.0 - alpha));
+
+					
+					document.getElementById("accelerationX").innerHTML = ax;
+					document.getElementById("accelerationY").innerHTML = ay;
+					document.getElementById("accelerationZ").innerHTML = az;
+					
+					roll = Math.atan2(ay, az) * 180/Math.PI;
+					pitch = Math.atan2(ax, Math.sqrt(ay*ay + az*az)) * 180/Math.PI;
+					
+					document.getElementById("rollLi").innerHTML = roll;
+					document.getElementById("pitchLi").innerHTML = pitch;
+
+					var toServer = {};
+					toServer['ax'] = ax;
+					toServer['ay'] = ay;
+					toServer['az'] = az;
+					
+					
+					toServer['roll'] = roll;
+					toServer['pitch'] = pitch;
+					
+					
+					
+					jQuerySend("ACCELEROMETER_DATA",toServer);
+			
+/*
+					if ( e.rotationRate ) {
+						document.getElementById("rotationAlpha").innerHTML = e.rotationRate.alpha;
+						document.getElementById("rotationBeta").innerHTML = e.rotationRate.beta;
+						document.getElementById("rotationGamma").innerHTML = e.rotationRate.gamma;
+					}		
+*/
+				}
+			
+			} 
+			
+		
+		</script>
+	</body>
+</html>
+
