@@ -35,7 +35,6 @@
 		
 		test: <span id="test"></span>
 		</div>
-		幹
 		
 		<script type="text/javascript">
 			var sentCount = 0;
@@ -47,6 +46,7 @@
 					var message = {};
 					message.command = command;
 					message.arg1 = arg1;
+					message.overallCount = sentCount;
 					console.log("送出！");
 					
 					var msg=JSON.stringify(message);

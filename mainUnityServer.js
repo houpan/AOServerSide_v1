@@ -21,12 +21,14 @@ tcp.CreateServer(10000,
 	    hSocketOutside = hSocket;
 	/*         hSocketOutside.end();   */
 	    
+/*
 		var myVar = setInterval(function(){myTimer()},1000);
 		
 		function myTimer()
 		{
 	        hSocketOutside.write('hello World!~~~');
 		}
+*/
 	}
 );  
 
@@ -51,12 +53,24 @@ console.log('Listening on port 5566');
 app.use(express.bodyParser());
 app.post('/COMMAND',function(req, res){
 	
+	
+	
     var responseData=req.body;
     console.log(responseData.command);
     //用了body parser之後，連arg1裡面的東西都會parse成array，還蠻方變得
     console.log(responseData.arg1.roll);
     console.log(responseData.arg1.pitch);
-/*     hSocketOutside.write(responseData.arg1.pitch); */
+    console.log(responseData.arg1.overallCount);
+
+	var messageToUnity = {};
+	messageToUnity.command = responseData.command;
+	messageToUnity.roll = responseData.arg1.roll;
+	messageToUnity.pitch = responseData.arg1.pitch;
+	messageToUnity.overallCount = responseData.overallCount;
+	var messageToUnity_json = JSON.stringify(messageToUnity);
+
+    hSocketOutside.write(messageToUnity_json);
+    
     switch (responseData.command){
 	    case "ACCELEROMETER_DATA":
 	    	//注意！！這邊一定要回傳result，不然他積六個左右的post就會爛掉了！
