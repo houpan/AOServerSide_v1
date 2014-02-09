@@ -97,6 +97,7 @@
 					ax = e.accelerationIncludingGravity.x/10 * alpha + (ax * (1.0 - alpha));
 					ay = e.accelerationIncludingGravity.y/10 * alpha + (ay * (1.0 - alpha));
 					az = e.accelerationIncludingGravity.z/10 * alpha + (az * (1.0 - alpha));
+					ay = -ay;
 
 					
 					document.getElementById("accelerationX").innerHTML = ax;
