@@ -42,11 +42,10 @@
 			function jQuerySend(command, arg1){    
 				sentCount += 1;
 /* 				if(sentCount == 10){ */
-					sentCount = 0;
 					var message = {};
 					message.command = command;
 					message.arg1 = arg1;
-					message.overallCount = sentCount;
+					message.arg1.overallCount = sentCount;
 					console.log("送出！");
 					
 					var msg=JSON.stringify(message);

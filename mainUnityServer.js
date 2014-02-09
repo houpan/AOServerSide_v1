@@ -9,6 +9,7 @@ tcp.CreateServer(10000,
     function(hSocket, sBuffer){//接收！
         console.log("接收！"+sBuffer);
 /*
+		JSON decoding example
         var obj = JSON.parse(sBuffer);
         console.log(obj.author.name);
 */
@@ -66,7 +67,7 @@ app.post('/COMMAND',function(req, res){
 	messageToUnity.command = responseData.command;
 	messageToUnity.roll = responseData.arg1.roll;
 	messageToUnity.pitch = responseData.arg1.pitch;
-	messageToUnity.overallCount = responseData.overallCount;
+	messageToUnity.overallCount = responseData.arg1.overallCount;
 	var messageToUnity_json = JSON.stringify(messageToUnity);
 
     hSocketOutside.write(messageToUnity_json);
