@@ -98,9 +98,9 @@ app.post('/COMMAND_FROM_ANDROID',function(req, res){
 
 	var messageToUnity = {};
 	messageToUnity.command = responseData.command;
-	messageToUnity.roll = responseData.roll;
-	messageToUnity.pitch = responseData.pitch;
 	messageToUnity.yaw = responseData.yaw;
+	messageToUnity.pitch = responseData.pitch;
+	messageToUnity.roll = responseData.roll;
 	messageToUnity.overallCount = responseData.overallCount;
 	
 	var messageToUnity_json = JSON.stringify(messageToUnity);
